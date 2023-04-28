@@ -1,5 +1,9 @@
 {
     "player": {
         "source": "https://media.tenor.com/kAGCvceHzE8AAAAd/bocchi-the-rock-ryo-yamada.gif"
-    }
+    },
+    "authorizedUsers": [
+        "lrvervaet@mtu.edu",
+        "luisrvervaet@gmail.com"
+    ]
 }

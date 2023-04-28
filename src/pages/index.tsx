@@ -5,18 +5,17 @@ const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export default function Gif() {
-  const { data, error } = useSWR("/api/getImageSource", fetcher, {
+  const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
   });
-  if (error) return <div>Failed to load gif</div>;
+  if (error) return <div>Failed to load config</div>;
 
   if (!data) return <div>Loading...</div>;
-  const json = JSON.parse(data);
 
   return (
     <>
       <Image
-        src={json.player.source}
+        src={data.player.source}
         fill
         style={{ objectFit: "contain" }}
         alt="gif"
