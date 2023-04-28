@@ -5,8 +5,10 @@ const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export default function Gif() {
-  const { data, error } = useSWR("/api/getImageSource", fetcher);
-  if (error) return <div>Failed to load</div>;
+  const { data, error } = useSWR("/api/getImageSource", fetcher, {
+    refreshInterval: 1000,
+  });
+  if (error) return <div>Failed to load gif</div>;
 
   if (!data) return <div>Loading...</div>;
   const json = JSON.parse(data);
