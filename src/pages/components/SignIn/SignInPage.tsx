@@ -42,3 +42,5 @@ export function SignInPage() {
     </>
   );
 }
+
+export default SignInPage;
