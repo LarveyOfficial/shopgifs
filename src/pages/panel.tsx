@@ -9,7 +9,7 @@ const fetcher = (url: RequestInfo | URL) =>
 
 export default function Panel() {
   const { data: session } = useSession();
-  const { data, error } = useSWR("/api/getConfig", fetcher, {
+  const { data, error } = useSWR("/api/getUsers", fetcher, {
     refreshInterval: 1000,
   });
   if (error) return <div>Failed to load config</div>;
@@ -18,7 +18,7 @@ export default function Panel() {
 
   if (session) {
     console.log(session.user!.email);
-    if (!data.authorizedUsers.includes(session.user!.email)) signOut();
+    if (!data.includes(session.user!.email)) signOut();
     return (
       <>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">

@@ -16,7 +16,7 @@ export default function Gif() {
   return (
     <>
       <Image
-        src={data.player.source}
+        src={data["0"].player.source}
         fill
         style={{ objectFit: "contain" }}
         alt="gif"
