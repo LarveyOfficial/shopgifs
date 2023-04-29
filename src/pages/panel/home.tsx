@@ -108,6 +108,17 @@ export function Home() {
           </div>
           <div className="pl-5 pr-5 md:pr-52">
             <p className="font-bold text-white">Preview</p>
+            {!data ? (
+              <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
+                <div className="flex animate-pulse space-x-2">
+                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             {error ? (
               <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
                 <div className="container mx-auto my-8 flex flex-col items-center justify-center space-y-8 px-5 text-center sm:max-w-md">
@@ -141,24 +152,15 @@ export function Home() {
                   </p>
                 </div>
               </section>
-            ) : (
-              <></>
-            )}
-            {!data ? (
-              <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
-                <div className="flex animate-pulse space-x-2">
-                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                  <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                </div>
-              </div>
-            ) : (
+            ) : data ? (
               <Image
                 src={data["0"].player.source}
                 width={500}
                 height={500}
                 alt="gif"
               ></Image>
+            ) : (
+              <></>
             )}
           </div>
         </div>
