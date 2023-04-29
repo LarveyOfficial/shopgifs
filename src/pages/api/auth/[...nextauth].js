@@ -9,6 +9,9 @@ export const authOptions = {
     }),
   ],
   secrete: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: "/panel",
+  },
 };
 
 export default NextAuth(authOptions);
