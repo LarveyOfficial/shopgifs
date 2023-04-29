@@ -11,7 +11,7 @@ export default function Gif() {
   });
   if (error)
     return (
-      <section className="flex h-full items-center dark:bg-gray-900 dark:text-gray-100 sm:p-16">
+      <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
         <div className="container mx-auto my-8 flex flex-col items-center justify-center space-y-8 px-5 text-center sm:max-w-md">
           <svg
             xmlns="http://www.w3.org/2000/svg"
