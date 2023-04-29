@@ -1,5 +1,6 @@
 import Image from "next/image";
 import useSWR from "swr";
+import { Analytics } from "@vercel/analytics/react";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -20,6 +21,7 @@ export default function Gif() {
         style={{ objectFit: "contain" }}
         alt="gif"
       ></Image>
+      <Analytics />
     </>
   );
 }
