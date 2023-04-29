@@ -152,12 +152,25 @@ export function Home() {
           </div>
           <div className="pl-5 pr-5 md:pr-52">
             <p className="font-bold text-white">Preview</p>
-            <Image
-              src={data["0"].player.source}
-              width={500}
-              height={500}
-              alt="gif"
-            ></Image>
+            <div>
+              {data["0"].player.type == "image" ? (
+                <Image
+                  src={data["0"].player.source}
+                  width={500}
+                  height={500}
+                  alt="gif"
+                ></Image>
+              ) : (
+                <video
+                  src={data["0"].player.source}
+                  autoPlay
+                  loop
+                  muted
+                  style={{ objectFit: "fill" }}
+                  className="video-js"
+                />
+              )}
+            </div>
           </div>
         </div>
       </>

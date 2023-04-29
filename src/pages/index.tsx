@@ -1,6 +1,8 @@
 import Image from "next/image";
 import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
+import { MutableRefObject, useRef } from "react";
+import "video.js/dist/video-js.css";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -9,6 +11,7 @@ export default function Gif() {
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
   });
+
   if (error)
     return (
       <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
@@ -42,7 +45,6 @@ export default function Gif() {
         </div>
       </section>
     );
-
   if (!data)
     return (
       <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
@@ -56,12 +58,27 @@ export default function Gif() {
 
   return (
     <>
-      <Image
-        src={data["0"].player.source}
-        fill
-        style={{ objectFit: "contain" }}
-        alt="gif"
-      ></Image>
+      <div>
+        {data["0"].player.type == "image" ? (
+          <Image
+            src={data["0"].player.source}
+            fill
+            style={{ objectFit: "contain" }}
+            alt="gif"
+          ></Image>
+        ) : (
+          <video
+            src={data["0"].player.source}
+            autoPlay
+            loop
+            muted
+            style={{
+              aspectRatio: 16 / 9,
+              width: "100%",
+            }}
+          />
+        )}
+      </div>
       <Analytics />
     </>
   );
