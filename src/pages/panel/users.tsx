@@ -140,36 +140,36 @@ export function Users() {
           <div className="md:flex-grow">
             <div className="overflow-auto rounded-lg shadow">
               <table className="w-full">
-                <thead className="border-b-2 border-gray-200 bg-gray-50">
+                <thead className="bg-gray-900">
                   <tr>
-                    <th className="w-12 p-3 text-left text-sm font-semibold tracking-wide">
+                    <th className="w-12 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       Name
                     </th>
-                    <th className="w-12 p-3 text-left text-sm font-semibold tracking-wide">
+                    <th className="w-12 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       Email
                     </th>
-                    <th className="w-5 p-3 text-left text-sm font-semibold tracking-wide">
+                    <th className="w-5 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       Admin
                     </th>
-                    <th className="w-20 p-3 text-left text-sm font-semibold tracking-wide">
+                    <th className="w-20 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       Action
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-gray-600">
                   {data.map((user: any) => {
                     return (
                       <tr key={user.email} className="bg-gray-700">
-                        <td className="whitespace-nowrap p-3 pl-5 text-sm text-white">
+                        <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                           {user.name}
                         </td>
-                        <td className="whitespace-nowrap p-3 pl-5 text-sm text-white">
+                        <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                           {user.email}
                         </td>
-                        <td className="whitespace-nowrap p-3 pl-5 text-sm text-white">
+                        <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                           {user.admin.toString()}
                         </td>
-                        <td className="whitespace-nowrap p-3 text-sm text-white">
+                        <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                           <form onSubmit={handleSubmit}>
                             <input
                               type="hidden"
@@ -204,7 +204,7 @@ export function Users() {
                     );
                   })}
                   <tr className="bg-gray-700" hidden={!isUserAdmin}>
-                    <td className="whitespace-nowrap p-3 text-sm text-white">
+                    <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <input
                         type="text"
                         id="name"
@@ -212,10 +212,10 @@ export function Users() {
                         placeholder="Name"
                         onChange={handleInput}
                         value={formData.name}
-                        className="rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
+                        className="rounded-lg border text-center focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
                       ></input>
                     </td>
-                    <td className="whitespace-nowrap p-3 text-sm text-white">
+                    <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <input
                         type="text"
                         id="email"
@@ -223,10 +223,10 @@ export function Users() {
                         placeholder="Email"
                         onChange={handleInput}
                         value={formData.email}
-                        className="rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
+                        className="rounded-lg border text-center focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
                       ></input>
                     </td>
-                    <td className="whitespace-nowrap p-3 text-sm text-white">
+                    <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <label className="relative inline-flex cursor-pointer items-center">
                         <input
                           type="checkbox"
@@ -240,7 +240,7 @@ export function Users() {
                         <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800"></div>
                       </label>
                     </td>
-                    <td className="whitespace-nowrap p-3 text-sm text-white">
+                    <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <form onSubmit={handleSubmit}>
                         <input
                           type="hidden"
