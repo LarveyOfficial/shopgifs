@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import React, { useState } from "react";
+import Head from "next/head";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -108,6 +109,9 @@ export function Home() {
       );
     return (
       <>
+        <Head>
+          <title>Home - {process.env.NEXT_PUBLIC_SITENAME}</title>
+        </Head>
         <Header />
         <br />
         <div className="flex flex-col flex-wrap space-y-5 md:flex-row md:flex-nowrap md:space-y-0">
