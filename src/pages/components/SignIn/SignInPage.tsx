@@ -1,7 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useKeyboardShortcut } from "../../../hooks/useKeyboardShortcut";
+
 export function SignInPage() {
+  const [showPhopp, setShowPhopp] = useState(false);
+
+  const handlePhopp = () => {
+    setShowPhopp(!showPhopp);
+  };
+
+  useKeyboardShortcut(["ctrl", "l"], handlePhopp);
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -10,9 +21,10 @@ export function SignInPage() {
             className="mx-auto h-40 w-auto"
             width={500}
             height={500}
-            src="https://www.mtu.edu/mtu_resources/images/download-central/logos/husky-icon/gold.png"
+            src={!showPhopp ? "/gold.webp" : "/phopp.png"}
             alt="MTU Logo"
           ></Image>
+
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight dark:text-white">
             Sign in to access the Panel
           </h2>

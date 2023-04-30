@@ -6,11 +6,20 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useKeyboardShortcut } from "../../hooks/useKeyboardShortcut";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export function Header() {
+  const [showPhopp, setShowPhopp] = useState(false);
+
+  const handlePhopp = () => {
+    setShowPhopp(!showPhopp);
+  };
+
+  useKeyboardShortcut(["ctrl", "l"], handlePhopp);
+
   const router = useRouter();
   const currentPath = router.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,7 +86,7 @@ export function Header() {
               width={500}
               height={500}
               className="h-9 w-auto"
-              src="https://www.mtu.edu/mtu_resources/images/download-central/logos/husky-icon/gold.png"
+              src={!showPhopp ? "/gold.webp" : "/phopp.png"}
               alt=""
             />
           </a>
@@ -141,7 +150,7 @@ export function Header() {
                 width={500}
                 height={500}
                 className="h-9 w-auto"
-                src="https://www.mtu.edu/mtu_resources/images/download-central/logos/husky-icon/gold.png"
+                src={!showPhopp ? "/gold.webp" : "/phopp.png"}
                 alt=""
               />
             </a>
