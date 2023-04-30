@@ -8,12 +8,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useKeyboardShortcut } from "../../hooks/useKeyboardShortcut";
 
-const fetcher = async (url: any, email: any) =>
-  await fetch(url, {
-    headers: {
-      email: email,
-    },
-  }).then((response) => response.json());
+const fetcher = (url: RequestInfo | URL) =>
+  fetch(url).then((res) => res.json());
 
 export function Header() {
   const [showPhopp, setShowPhopp] = useState(false);
@@ -21,9 +17,7 @@ export function Header() {
   const currentPath = router.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
-  const { data: user, error } = useSWR("getSessionUser", () =>
-    fetcher("/api/getUser", session!.user!.email)
-  );
+  const { data, error } = useSWR("/api/getUser", fetcher, {});
   const handlePhopp = () => {
     setShowPhopp(!showPhopp);
   };
@@ -64,7 +58,7 @@ export function Header() {
       </section>
     );
 
-  if (!user)
+  if (!data)
     return (
       <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
         <div className="flex animate-pulse space-x-2">
@@ -75,7 +69,7 @@ export function Header() {
       </div>
     );
 
-  if (user.res == 404) {
+  if (!data.includes(session!.user!.email)) {
     signOut({ callbackUrl: `${window.location.origin}/panel` });
   }
 
