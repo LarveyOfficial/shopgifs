@@ -4,12 +4,15 @@ import Image from "next/image";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export function Header() {
+  const router = useRouter();
+  const currentPath = router.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
   const { data, error } = useSWR("/api/getUsers", fetcher, {});
@@ -64,12 +67,12 @@ export function Header() {
   return (
     <header className="bg-gray-700">
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-10"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">Shop Gifs</span>
             <Image
               width={500}
               height={500}
@@ -92,13 +95,21 @@ export function Header() {
         <Popover.Group className="hidden lg:flex lg:gap-x-24">
           <Link
             href="/panel/home"
-            className="text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+            className={
+              currentPath == "/panel/home"
+                ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
+                : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+            }
           >
             Home
           </Link>
           <Link
             href="/panel/users"
-            className="text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+            className={
+              currentPath == "/panel/users"
+                ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
+                : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+            }
           >
             Users
           </Link>
