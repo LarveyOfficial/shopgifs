@@ -8,6 +8,10 @@ const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export function Users() {
+  const { data: session } = useSession();
+  const { data, error } = useSWR("/api/manageUserObjects", fetcher, {
+    refreshInterval: 1000,
+  });
   let isUserAdmin = false;
   const [formData, setFormData] = useState({
     name: "",
@@ -15,6 +19,7 @@ export function Users() {
     admin: "false",
   });
 
+  // Make sure form input is accurate and up to date
   const handleInput = (e: any) => {
     const fieldName = e.target.name;
     let fieldValue = "";
@@ -30,6 +35,8 @@ export function Users() {
       [fieldName]: fieldValue,
     }));
   };
+
+  // Handles POST request for the input
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -73,11 +80,8 @@ export function Users() {
     }
   };
 
-  const { data: session } = useSession();
-  const { data, error } = useSWR("/api/manageUserObjects", fetcher, {
-    refreshInterval: 1000,
-  });
   if (session) {
+    // If data errors show sad face
     if (error) {
       return (
         <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
@@ -112,7 +116,9 @@ export function Users() {
         </section>
       );
     }
-    if (!data)
+
+    // While data loading, show animation
+    if (!data) {
       return (
         <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
           <div className="flex animate-pulse space-x-2">
@@ -122,6 +128,9 @@ export function Users() {
           </div>
         </div>
       );
+    }
+
+    //Check if user is admin or not
     data.forEach(function (user: any) {
       if (user.email == session.user!.email) {
         if (user.admin) {

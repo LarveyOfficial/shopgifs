@@ -8,6 +8,7 @@ export default function Panel() {
   const router = useRouter();
   const title = "Panel - " + process.env.NEXT_PUBLIC_SITENAME;
 
+  // Take user to Player when keybind detected
   const goToPlayer = () => {
     router.push("/");
   };

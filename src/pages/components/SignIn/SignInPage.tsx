@@ -7,6 +7,7 @@ import { useKeyboardShortcut } from "../../../hooks/useKeyboardShortcut";
 export function SignInPage() {
   const [showPhopp, setShowPhopp] = useState(false);
 
+  // lmao funny Pat
   const handlePhopp = () => {
     setShowPhopp(!showPhopp);
   };

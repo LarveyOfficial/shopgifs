@@ -7,7 +7,11 @@ export default async (req, res) => {
     const db = await connectToDatabase();
     if (req.method === "GET") {
       const collection = await db.collection("authorizedUsers");
-      const data = await collection.distinct("email");
+      const query = { email: req.headers.email };
+      const data = await collection.findOne(query);
+      if (!data) {
+        res.status(404).json({ res: 404 });
+      }
       res.status(200).json(data);
     }
   } else {
