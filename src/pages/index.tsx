@@ -2,14 +2,23 @@ import Image from "next/image";
 import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useKeyboardShortcut } from "../hooks/useKeyboardShortcut";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export default function Gif() {
+  const router = useRouter();
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
   });
+
+  const goToPanel = () => {
+    router.push("/panel");
+  };
+
+  useKeyboardShortcut(["ctrl", "p"], goToPanel);
 
   if (error)
     return (
