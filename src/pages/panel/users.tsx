@@ -227,16 +227,18 @@ export function Users() {
                       ></input>
                     </td>
                     <td className="whitespace-nowrap p-3 text-sm text-white">
-                      <select
-                        id="admin"
-                        name="admin"
-                        onChange={handleInput}
-                        value={formData.admin}
-                        className="rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
-                      >
-                        <option value="true">true</option>
-                        <option value="false">false</option>
-                      </select>
+                      <label className="relative inline-flex cursor-pointer items-center">
+                        <input
+                          type="checkbox"
+                          id="admin"
+                          name="admin"
+                          onChange={handleInput}
+                          value={formData.admin}
+                          className="peer sr-only"
+                          checked={formData.admin == "true"}
+                        ></input>
+                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800"></div>
+                      </label>
                     </td>
                     <td className="whitespace-nowrap p-3 text-sm text-white">
                       <form onSubmit={handleSubmit}>
