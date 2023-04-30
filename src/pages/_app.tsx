@@ -31,7 +31,7 @@ export default function App({
         />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#eab308" />
         <meta name="msapplication-TileColor" content="#eab308" />
-        <meta name="theme-color" content="#374151"></meta>
+        <meta name="theme-color" content="#eab308"></meta>
       </Head>
       <Component {...pageProps} />
     </SessionProvider>
