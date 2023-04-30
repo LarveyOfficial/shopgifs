@@ -17,7 +17,7 @@ export function Header() {
   const currentPath = router.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
-  const { data, error } = useSWR("/api/getUser", fetcher, {});
+  const { data, error } = useSWR("/api/getUsers", fetcher, {});
   const handlePhopp = () => {
     setShowPhopp(!showPhopp);
   };
