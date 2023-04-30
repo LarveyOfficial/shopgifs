@@ -11,7 +11,7 @@ export const connectToDatabase = async () => {
     useUnifiedTopology: true,
   })
     .then((client) => {
-      let db = client.db("ShopGifs"); // free version
+      let db = client.db(process.env.DATABASE); // free version
       console.log("New DB Connection");
       cachedDb = db;
       return cachedDb;

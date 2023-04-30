@@ -10,7 +10,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Head>
-        <title>Shop Gifs</title>
+        <title>{process.env.SITENAME}</title>
         <meta name="description" content="Gifs player for the MTU OPS Shop" />
         <link
           rel="apple-touch-icon"
