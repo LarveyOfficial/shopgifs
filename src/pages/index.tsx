@@ -1,6 +1,7 @@
 import Image from "next/image";
 import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
+import Head from "next/head";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -56,6 +57,9 @@ export default function Gif() {
 
   return (
     <>
+      <Head>
+        <title>Player - {process.env.NEXT_PUBLIC_SITENAME}</title>
+      </Head>
       <div>
         {data["0"].player.type == "image" ? (
           <Image

@@ -8,9 +8,8 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
+    <>
       <Head>
-        <title>{process.env.SITENAME}</title>
         <meta name="description" content="Gifs player for the MTU OPS Shop" />
         <link
           rel="apple-touch-icon"
@@ -33,7 +32,9 @@ export default function App({
         <meta name="msapplication-TileColor" content="#eab308" />
         <meta name="theme-color" content="#eab308"></meta>
       </Head>
-      <Component {...pageProps} />
-    </SessionProvider>
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </>
   );
 }

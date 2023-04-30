@@ -2,6 +2,7 @@ import { Header } from "./Header";
 import useSWR from "swr";
 import { useSession, signOut } from "next-auth/react";
 import React, { useState } from "react";
+import Head from "next/head";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -130,6 +131,9 @@ export function Users() {
     });
     return (
       <>
+        <Head>
+          <title>Users - {process.env.NEXT_PUBLIC_SITENAME}</title>
+        </Head>
         <Header />
         <div className="hidden justify-center py-5 md:flex">
           <div className="md:flex-1"></div>
