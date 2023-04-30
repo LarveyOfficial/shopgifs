@@ -152,7 +152,7 @@ export function Users() {
                       Admin
                     </th>
                     <th className="w-20 p-3 text-left text-sm font-semibold tracking-wide">
-                      Delete?
+                      Action
                     </th>
                   </tr>
                 </thead>
