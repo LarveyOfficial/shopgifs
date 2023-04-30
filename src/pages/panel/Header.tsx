@@ -12,9 +12,7 @@ const fetcher = (url: RequestInfo | URL) =>
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
-  const { data, error } = useSWR("/api/getUsers", fetcher, {
-    refreshInterval: 1000,
-  });
+  const { data, error } = useSWR("/api/getUsers", fetcher, {});
   if (error)
     return (
       <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
