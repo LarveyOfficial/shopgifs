@@ -6,16 +6,30 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useKeyboardShortcut } from "../../hooks/useKeyboardShortcut";
 
-const fetcher = (url: RequestInfo | URL) =>
-  fetch(url).then((res) => res.json());
+const fetcher = async (url: any, email: any) =>
+  await fetch(url, {
+    headers: {
+      email: email,
+    },
+  }).then((response) => response.json());
 
 export function Header() {
+  const [showPhopp, setShowPhopp] = useState(false);
   const router = useRouter();
   const currentPath = router.pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { data: session } = useSession();
-  const { data, error } = useSWR("/api/getUsers", fetcher, {});
+  const { data: user, error } = useSWR("getSessionUser", () =>
+    fetcher("/api/getUser", session!.user!.email)
+  );
+  const handlePhopp = () => {
+    setShowPhopp(!showPhopp);
+  };
+
+  useKeyboardShortcut(["ctrl", "l"], handlePhopp);
+
   if (error)
     return (
       <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
@@ -50,7 +64,7 @@ export function Header() {
       </section>
     );
 
-  if (!data)
+  if (!user)
     return (
       <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
         <div className="flex animate-pulse space-x-2">
@@ -60,133 +74,140 @@ export function Header() {
         </div>
       </div>
     );
-  if (session) {
-    if (!data.includes(session.user!.email))
-      signOut({ callbackUrl: `${window.location.origin}/panel` });
+
+  if (user.res == 404) {
+    signOut({ callbackUrl: `${window.location.origin}/panel` });
   }
-  return (
-    <header className="bg-gray-700">
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-10"
-        aria-label="Global"
-      >
-        <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Shop Gifs</span>
-            <Image
-              width={500}
-              height={500}
-              className="h-9 w-auto"
-              src="https://www.mtu.edu/mtu_resources/images/download-central/logos/husky-icon/gold.png"
-              alt=""
-            />
-          </a>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            <span className="sr-only">Open main menu</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-24">
-          <Link
-            href="/panel/home"
-            className={
-              currentPath == "/panel/home"
-                ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
-                : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
-            }
-          >
-            Home
-          </Link>
-          <Link
-            href="/panel/users"
-            className={
-              currentPath == "/panel/users"
-                ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
-                : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
-            }
-          >
-            Users
-          </Link>
-        </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="#"
-            className="text-sm font-semibold leading-6 text-white hover:text-yellow-500"
-            onClick={() =>
-              signOut({ callbackUrl: `${window.location.origin}/panel` })
-            }
-          >
-            <span aria-hidden="true">&larr;</span> Sign out
-          </a>
-        </div>
-      </nav>
-      <Dialog
-        as="div"
-        className="lg:hidden"
-        open={mobileMenuOpen}
-        onClose={setMobileMenuOpen}
-      >
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-yellow-500/50">
-          <div className="flex items-center justify-between">
+
+  if (session) {
+    return (
+      <header className="bg-gray-700">
+        <nav
+          className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-10"
+          aria-label="Global"
+        >
+          <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Shop Gifs</span>
               <Image
                 width={500}
                 height={500}
                 className="h-9 w-auto"
-                src="https://www.mtu.edu/mtu_resources/images/download-central/logos/husky-icon/gold.png"
+                src={!showPhopp ? "/gold.webp" : "/phopp.png"}
                 alt=""
               />
             </a>
+          </div>
+          <div className="flex lg:hidden">
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-white"
-              onClick={() => setMobileMenuOpen(false)}
+              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+              onClick={() => setMobileMenuOpen(true)}
             >
-              <span className="sr-only">Close menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-yellow-500/50">
-              <div className="space-y-2 py-6">
-                <Link
-                  href="/panel/home"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/panel/users"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
-                >
-                  Users
-                </Link>
-              </div>
-              <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
-                  onClick={() =>
-                    signOut({ callbackUrl: `${window.location.origin}/panel` })
-                  }
-                >
-                  Sign out
-                </a>
+          <Popover.Group className="hidden lg:flex lg:gap-x-24">
+            <Link
+              href="/panel/home"
+              className={
+                currentPath == "/panel/home"
+                  ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
+                  : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+              }
+            >
+              Home
+            </Link>
+            <Link
+              href="/panel/users"
+              className={
+                currentPath == "/panel/users"
+                  ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
+                  : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+              }
+            >
+              Users
+            </Link>
+          </Popover.Group>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <a
+              href="#"
+              className="text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+              onClick={() =>
+                signOut({ callbackUrl: `${window.location.origin}/panel` })
+              }
+            >
+              <span aria-hidden="true">&larr;</span> Sign out
+            </a>
+          </div>
+        </nav>
+        <Dialog
+          as="div"
+          className="lg:hidden"
+          open={mobileMenuOpen}
+          onClose={setMobileMenuOpen}
+        >
+          <div className="fixed inset-0 z-10" />
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-yellow-500/50">
+            <div className="flex items-center justify-between">
+              <a href="#" className="-m-1.5 p-1.5">
+                <span className="sr-only">Shop Gifs</span>
+                <Image
+                  width={500}
+                  height={500}
+                  className="h-9 w-auto"
+                  src={!showPhopp ? "/gold.webp" : "/phopp.png"}
+                  alt=""
+                />
+              </a>
+              <button
+                type="button"
+                className="-m-2.5 rounded-md p-2.5 text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="sr-only">Close menu</span>
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+            <div className="mt-6 flow-root">
+              <div className="-my-6 divide-y divide-yellow-500/50">
+                <div className="space-y-2 py-6">
+                  <Link
+                    href="/panel/home"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/panel/users"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
+                  >
+                    Users
+                  </Link>
+                </div>
+                <div className="py-6">
+                  <a
+                    href="#"
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
+                    onClick={() =>
+                      signOut({
+                        callbackUrl: `${window.location.origin}/panel`,
+                      })
+                    }
+                  >
+                    Sign out
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
-    </header>
-  );
+          </Dialog.Panel>
+        </Dialog>
+      </header>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 export default Header;

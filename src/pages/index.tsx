@@ -10,16 +10,20 @@ const fetcher = (url: RequestInfo | URL) =>
 
 export default function Gif() {
   const router = useRouter();
+
+  // Check for new image every 1 second
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
   });
 
+  // Take user to panel when keybind detected
   const goToPanel = () => {
     router.push("/panel");
   };
 
   useKeyboardShortcut(["ctrl", "p"], goToPanel);
 
+  // If data grab fails, show sad face
   if (error)
     return (
       <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
@@ -53,6 +57,8 @@ export default function Gif() {
         </div>
       </section>
     );
+
+  // While data is loading, show loading animation
   if (!data)
     return (
       <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">

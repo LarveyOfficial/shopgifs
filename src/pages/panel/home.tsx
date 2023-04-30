@@ -9,17 +9,23 @@ const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
 export function Home() {
+  const { data: session } = useSession();
+  // Update preview gif/image every second
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
   });
-  const { data: session } = useSession();
+  // Default form values
   const [formData, setFormData] = useState({
     url: "",
   });
+  // Variable that displays if an error has occured or not
   const [formSuccessCode, setFormSuccessCode] = useState(Number);
-  const delay = (ms: number | undefined) =>
-    new Promise((res) => setTimeout(res, ms));
   if (session) {
+    // Define a delay
+    const delay = (ms: number | undefined) =>
+      new Promise((res) => setTimeout(res, ms));
+
+    // Ensures that displayed form values are up to date and accurate
     const handleInput = (e: any) => {
       const fieldName = e.target.name;
       const fieldValue = e.target.value;
@@ -30,6 +36,7 @@ export function Home() {
       }));
     };
 
+    // Handles the updating of GIF/Video source URL
     const handleSubmit = async (event: any) => {
       event.preventDefault();
 
@@ -63,6 +70,8 @@ export function Home() {
         setFormSuccessCode(418);
       }
     };
+
+    // If data grab errors, show a sad face
     if (error) {
       return (
         <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
@@ -97,6 +106,8 @@ export function Home() {
         </section>
       );
     }
+
+    // While data is loading, show a loading animation
     if (!data)
       return (
         <div className="min-w-screen flex min-h-screen items-center justify-center bg-gray-800 p-5">
@@ -107,6 +118,7 @@ export function Home() {
           </div>
         </div>
       );
+
     return (
       <>
         <Head>
