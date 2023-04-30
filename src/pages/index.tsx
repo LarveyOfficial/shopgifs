@@ -1,8 +1,6 @@
 import Image from "next/image";
 import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
-import { MutableRefObject, useRef } from "react";
-import "video.js/dist/video-js.css";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
