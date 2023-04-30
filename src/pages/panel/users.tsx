@@ -1,6 +1,6 @@
 import { Header } from "./Header";
 import useSWR from "swr";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import Head from "next/head";
 
