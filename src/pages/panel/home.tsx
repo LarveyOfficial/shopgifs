@@ -118,9 +118,11 @@ export function Home() {
 
     // Handles the updating of GIF/Video source URL
     const handleSubmit = async (event: any) => {
+      let data;
       event.preventDefault();
       if (formUploading) {
         const newUrl = await uploadToImgur();
+        console.log(newUrl);
         if (newUrl == "failed") {
           setFormSuccessCode(500);
           return;
@@ -129,11 +131,14 @@ export function Home() {
           ...prevState,
           url: newUrl!,
         }));
+        data = {
+          url: newUrl,
+        };
+      } else {
+        data = {
+          url: event.target.url.value,
+        };
       }
-
-      const data = {
-        url: event.target.url.value,
-      };
 
       const JSONdata = JSON.stringify(data);
 
