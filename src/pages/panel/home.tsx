@@ -18,6 +18,8 @@ export function Home() {
   const [formData, setFormData] = useState({
     url: "",
   });
+  const [formUpload, setFormUpload] = useState();
+  const [formUploading, setFormUploading] = useState(false);
   // Variable that displays if an error has occured or not
   const [formSuccessCode, setFormSuccessCode] = useState(Number);
 
@@ -84,9 +86,50 @@ export function Home() {
       }));
     };
 
+    const handleFormUpload = (e: any) => {
+      console.log(formUpload);
+      setFormUpload(e.target.files[0]);
+      setFormUploading(true);
+    };
+
+    const uploadToImgur = async () => {
+      const formData = new FormData();
+
+      formData.append("image", formUpload!);
+      formData.append("type", "file");
+
+      console.log(formUpload);
+
+      const res = await fetch("https://api.imgur.com/3/image/", {
+        method: "POST",
+        headers: {
+          Authorization: "Client-ID 28c870fbb31b7f3",
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success == false) {
+        return "failed";
+      }
+      console.log(data);
+      return data.data.link;
+    };
+
     // Handles the updating of GIF/Video source URL
     const handleSubmit = async (event: any) => {
       event.preventDefault();
+      if (formUploading) {
+        const newUrl = await uploadToImgur();
+        if (newUrl == "failed") {
+          setFormSuccessCode(500);
+          return;
+        }
+        setFormData((prevState) => ({
+          ...prevState,
+          url: newUrl!,
+        }));
+      }
 
       const data = {
         url: event.target.url.value,
@@ -166,10 +209,16 @@ export function Home() {
                     id="url"
                     onChange={handleInput}
                     value={formData.url}
-                    required
+                    required={formUploading}
+                    disabled={formUploading}
                     placeholder="https://media.giphy.com/media/fRB9j0KCRe0KY/giphy.gif"
                     className="flex flex-1 rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
                   />
+                  <input
+                    type="file"
+                    id="formUploadFile"
+                    onChange={handleFormUpload}
+                  ></input>
                   {formSuccessCode == 200 ? (
                     <p className="text-sm text-green-500">Success!</p>
                   ) : (
