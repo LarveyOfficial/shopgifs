@@ -94,16 +94,15 @@ export function Home() {
 
     const uploadToImgur = async () => {
       const formData = new FormData();
+      const auth = "Client-ID " + process.env.NEXT_PUBLIC_IMGURID;
 
       formData.append("image", formUpload!);
       formData.append("type", "file");
 
-      console.log(formUpload);
-
       const res = await fetch("https://api.imgur.com/3/image/", {
         method: "POST",
         headers: {
-          Authorization: "Client-ID " + process.env.NEXT_PUBLIC_IMGURID,
+          Authorization: auth,
         },
         body: formData,
       });
@@ -112,7 +111,6 @@ export function Home() {
       if (data.success == false) {
         return "failed";
       }
-      console.log(data);
       return data.data.link;
     };
 
