@@ -96,22 +96,33 @@ export function Home() {
       const formData = new FormData();
       const auth = "Client-ID " + process.env.NEXT_PUBLIC_IMGURID;
 
-      formData.append("image", formUpload!);
-      formData.append("type", "file");
+      if (formUpload) {
+        console.log(formUpload);
+        if ((formUpload as any)["type"].includes("video")) {
+          formData.append("video", formUpload!);
+        } else if ((formUpload as any)["type"].includes("image")) {
+          formData.append("image", formUpload!);
+        } else {
+          return "failed";
+        }
+        formData.append("type", "file");
 
-      const res = await fetch("https://api.imgur.com/3/image/", {
-        method: "POST",
-        headers: {
-          Authorization: auth,
-        },
-        body: formData,
-      });
+        const res = await fetch("https://api.imgur.com/3/image/", {
+          method: "POST",
+          headers: {
+            Authorization: auth,
+          },
+          body: formData,
+        });
 
-      const data = await res.json();
-      if (data.success == false) {
+        const data = await res.json();
+        if (data.success == false) {
+          return "failed";
+        }
+        return data.data.link;
+      } else {
         return "failed";
       }
-      return data.data.link;
     };
 
     // Handles the updating of GIF/Video source URL
@@ -120,9 +131,8 @@ export function Home() {
       event.preventDefault();
       if (formUploading) {
         const newUrl = await uploadToImgur();
-        console.log(newUrl);
         if (newUrl == "failed") {
-          setFormSuccessCode(500);
+          setFormSuccessCode(403);
           return;
         }
         setFormData((prevState) => ({
@@ -228,7 +238,7 @@ export function Home() {
                     <></>
                   )}
                   {formSuccessCode == 403 ? (
-                    <p className="text-sm text-red-500">Wrong file type</p>
+                    <p className="text-sm text-red-500">Something went wrong</p>
                   ) : (
                     <></>
                   )}
