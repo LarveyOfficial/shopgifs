@@ -108,7 +108,7 @@ export function Home() {
         }
         formData.append("type", "file");
 
-        const res = await fetch("https://api.imgur.com/3/upload/", {
+        const res = await fetch("https://api.imgur.com/3/image/", {
           method: "POST",
           headers: {
             Authorization: auth,
