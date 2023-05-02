@@ -103,7 +103,7 @@ export function Home() {
       const res = await fetch("https://api.imgur.com/3/image/", {
         method: "POST",
         headers: {
-          Authorization: "Client-ID 28c870fbb31b7f3",
+          Authorization: "Client-ID " + process.env.IMGURID,
         },
         body: formData,
       });
