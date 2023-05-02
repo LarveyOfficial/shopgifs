@@ -31,7 +31,13 @@ export default async (req, res) => {
       console.log(
         `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
       );
-      res.status(200).json({ status: "API called sucessfully", code: 200 });
+      res
+        .status(200)
+        .json({
+          status: "API called sucessfully",
+          code: 200,
+          type: sourceType,
+        });
     }
   } else {
     res.status(401);
