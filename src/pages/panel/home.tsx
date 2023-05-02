@@ -119,6 +119,7 @@ export function Home() {
         if (data.success == false) {
           return "failed";
         }
+        console.log(data);
         return data.data.link;
       } else {
         return "failed";
