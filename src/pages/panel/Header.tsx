@@ -114,6 +114,16 @@ export function Header() {
               Home
             </Link>
             <Link
+              href="/panel/logs"
+              className={
+                currentPath == "/panel/logs"
+                  ? "border-b-2 text-sm font-semibold leading-6 hover:text-yellow-500 dark:border-transparent dark:border-yellow-400 dark:text-yellow-400"
+                  : "text-sm font-semibold leading-6 text-white hover:text-yellow-500"
+              }
+            >
+              Logs
+            </Link>
+            <Link
               href="/panel/users"
               className={
                 currentPath == "/panel/users"
@@ -172,6 +182,12 @@ export function Header() {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
                   >
                     Home
+                  </Link>
+                  <Link
+                    href="/panel/logs"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
+                  >
+                    Logs
                   </Link>
                   <Link
                     href="/panel/users"
