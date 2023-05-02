@@ -100,6 +100,7 @@ export function Home() {
         console.log(formUpload);
         if ((formUpload as any)["type"].includes("video")) {
           formData.append("video", formUpload!);
+          formData.append("disable_audio", "1");
         } else if ((formUpload as any)["type"].includes("image")) {
           formData.append("image", formUpload!);
         } else {
