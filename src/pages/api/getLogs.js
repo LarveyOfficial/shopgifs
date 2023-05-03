@@ -13,7 +13,7 @@ export default async (req, res) => {
     if (req.method === "POST") {
       const collection = await db.collection("logs");
       const date = req.body.date;
-      const name = req.body.name;
+      var name = req.body.name;
       const type = req.body.type;
       const url = req.body.url;
       const expireDate = req.body.expireDate;
