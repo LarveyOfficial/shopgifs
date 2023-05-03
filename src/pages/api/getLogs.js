@@ -12,6 +12,7 @@ export default async (req, res) => {
     }
     if (req.method === "POST") {
       const collection = await db.collection("logs");
+      const betterNameCol = await db.collection("authorizedUsers");
       const date = req.body.date;
       var name = req.body.name;
       const type = req.body.type;
@@ -20,7 +21,7 @@ export default async (req, res) => {
 
       const betterName = { email: session.user.email };
 
-      const getCoolName = await collection.findOne(betterName);
+      const getCoolName = await betterNameCol.findOne(betterName);
 
       if (getCoolName) {
         name = getCoolName.name;
@@ -35,7 +36,7 @@ export default async (req, res) => {
       };
 
       const logAdded = await collection.insertOne(newLog);
-      console.log("Successfully added log");
+      console.log("Successfully added log for " + name);
 
       const logDeleted = await collection.deleteMany({
         expireDate: { $lt: Date.now() + 1 + "" },
