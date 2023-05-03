@@ -15,44 +15,71 @@ export default async (req, res) => {
     } else if (req.method === "POST") {
       if (req.body.action == "delete") {
         const userEmail = req.body.email;
+        const requestor = session.user.email;
         const collection = db.collection("authorizedUsers");
 
-        const query = { email: userEmail };
+        const authQuery = { email: requestor };
 
-        const result = await collection.deleteOne(query);
-        if (result.deletedCount === 1) {
-          console.log("Successfully deleted one document.");
-          res.status(200).json({ status: "API called sucessfully", code: 200 });
+        const authResult = await collection.findOne(authQuery);
+
+        if (!authResult.admin) {
+          res.stauts(401).json({
+            status: "You are not allowed to preform this action",
+            code: 401,
+          });
         } else {
-          res
-            .status(500)
-            .json({ status: "No documents with given query found", code: 500 });
+          const query = { email: userEmail };
+
+          const result = await collection.deleteOne(query);
+          if (result.deletedCount === 1) {
+            console.log("Successfully deleted one document.");
+            res
+              .status(200)
+              .json({ status: "API called sucessfully", code: 200 });
+          } else {
+            res.status(500).json({
+              status: "No documents with given query found",
+              code: 500,
+            });
+          }
         }
       } else if (req.body.action == "create") {
         const userEmail = req.body.email;
         const userName = req.body.name;
         const isAdmin = req.body.admin == "true" ? true : false;
+        const requestor = session.user.email;
         const collection = db.collection("authorizedUsers");
 
-        const query = { email: userEmail };
+        const authQuery = { email: requestor };
 
-        const findUser = await collection.findOne(query);
-        if (findUser) {
-          res
-            .status(422)
-            .json({ status: "This user already exists", code: 422 });
+        const authResult = await collection.findOne(authQuery);
+
+        if (!authResult.admin) {
+          res.stauts(401).json({
+            status: "You are not allowed to preform this action",
+            code: 401,
+          });
         } else {
-          const newUser = {
-            email: userEmail,
-            admin: isAdmin,
-            name: userName,
-          };
+          const query = { email: userEmail };
 
-          const addUser = await collection.insertOne(newUser);
-          console.log("Successfully added new User");
-          res
-            .status(200)
-            .json({ addUser, status: "API called sucessfully", code: 200 });
+          const findUser = await collection.findOne(query);
+          if (findUser) {
+            res
+              .status(422)
+              .json({ status: "This user already exists", code: 422 });
+          } else {
+            const newUser = {
+              email: userEmail,
+              admin: isAdmin,
+              name: userName,
+            };
+
+            const addUser = await collection.insertOne(newUser);
+            console.log("Successfully added new User");
+            res
+              .status(200)
+              .json({ addUser, status: "API called sucessfully", code: 200 });
+          }
         }
       } else {
         res.status(404).json({ status: "404 Route not found" });

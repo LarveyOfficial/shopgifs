@@ -18,6 +18,8 @@ export function Home() {
   const [formData, setFormData] = useState({
     url: "",
   });
+  const [formUpload, setFormUpload] = useState();
+  const [formUploading, setFormUploading] = useState(false);
   // Variable that displays if an error has occured or not
   const [formSuccessCode, setFormSuccessCode] = useState(Number);
 
@@ -84,13 +86,57 @@ export function Home() {
       }));
     };
 
+    const handleFormUpload = (e: any) => {
+      setFormUpload(e.target.files[0]);
+      setFormUploading(true);
+    };
+
+    const uploadToSpace = async () => {
+      const formData = new FormData();
+      const auth = "" + process.env.NEXT_PUBLIC_TIXTEAPI;
+
+      if (formUpload) {
+        formData.append("file", formUpload!);
+        const res = await fetch("https://api.tixte.com/v1/upload?random=true", {
+          method: "POST",
+          headers: {
+            Authorization: auth,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        if (data.success == false) {
+          return "failed";
+        }
+        return data.data.direct_url;
+      } else {
+        return "failed";
+      }
+    };
+
     // Handles the updating of GIF/Video source URL
     const handleSubmit = async (event: any) => {
+      let data;
       event.preventDefault();
-
-      const data = {
-        url: event.target.url.value,
-      };
+      if (formUploading) {
+        const newUrl = await uploadToSpace();
+        if (newUrl == "failed") {
+          setFormSuccessCode(403);
+          return;
+        }
+        setFormData((prevState) => ({
+          ...prevState,
+          url: newUrl!,
+        }));
+        data = {
+          url: newUrl,
+        };
+      } else {
+        data = {
+          url: event.target.url.value,
+        };
+      }
 
       const JSONdata = JSON.stringify(data);
 
@@ -134,6 +180,15 @@ export function Home() {
             url: "",
           });
           setFormSuccessCode(200);
+          setFormUploading(false);
+          setFormUpload("" as any);
+          var oldInput = document.getElementById("formUploadFile");
+          var newInput = document.createElement("input");
+          newInput.type = "file";
+          newInput.id = oldInput!.id;
+          newInput.className = oldInput!.className;
+          newInput.onchange = handleFormUpload;
+          oldInput!.parentNode!.replaceChild(newInput, oldInput!);
           await delay(2000);
           setFormSuccessCode(418);
         } else {
@@ -166,17 +221,23 @@ export function Home() {
                     id="url"
                     onChange={handleInput}
                     value={formData.url}
-                    required
+                    required={formUploading}
+                    disabled={formUploading}
                     placeholder="https://media.giphy.com/media/fRB9j0KCRe0KY/giphy.gif"
                     className="flex flex-1 rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
                   />
+                  <input
+                    type="file"
+                    id="formUploadFile"
+                    onChange={handleFormUpload}
+                  ></input>
                   {formSuccessCode == 200 ? (
                     <p className="text-sm text-green-500">Success!</p>
                   ) : (
                     <></>
                   )}
                   {formSuccessCode == 403 ? (
-                    <p className="text-sm text-red-500">Wrong file type</p>
+                    <p className="text-sm text-red-500">Something went wrong</p>
                   ) : (
                     <></>
                   )}
