@@ -18,6 +18,14 @@ export default async (req, res) => {
       const url = req.body.url;
       const expireDate = req.body.expireDate;
 
+      const betterName = { email: session.user.email };
+
+      const getCoolName = await collection.findOne(betterName);
+
+      if (getCoolName) {
+        name = getCoolName.name;
+      }
+
       const newLog = {
         date: date,
         name: name,
