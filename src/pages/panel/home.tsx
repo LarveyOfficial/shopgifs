@@ -87,28 +87,17 @@ export function Home() {
     };
 
     const handleFormUpload = (e: any) => {
-      console.log(formUpload);
       setFormUpload(e.target.files[0]);
       setFormUploading(true);
     };
 
-    const uploadToImgur = async () => {
+    const uploadToSpace = async () => {
       const formData = new FormData();
-      const auth = "Client-ID " + process.env.NEXT_PUBLIC_IMGURID;
+      const auth = "" + process.env.NEXT_PUBLIC_TIXTEAPI;
 
       if (formUpload) {
-        console.log(formUpload);
-        if ((formUpload as any)["type"].includes("video")) {
-          formData.append("video", formUpload!);
-          formData.append("disable_audio", "1");
-        } else if ((formUpload as any)["type"].includes("image")) {
-          formData.append("image", formUpload!);
-        } else {
-          return "failed";
-        }
-        formData.append("type", "file");
-
-        const res = await fetch("https://api.imgur.com/3/image/", {
+        formData.append("file", formUpload!);
+        const res = await fetch("https://api.tixte.com/v1/upload?random=true", {
           method: "POST",
           headers: {
             Authorization: auth,
@@ -120,8 +109,7 @@ export function Home() {
         if (data.success == false) {
           return "failed";
         }
-        console.log(data);
-        return data.data.link;
+        return data.data.direct_url;
       } else {
         return "failed";
       }
@@ -132,7 +120,7 @@ export function Home() {
       let data;
       event.preventDefault();
       if (formUploading) {
-        const newUrl = await uploadToImgur();
+        const newUrl = await uploadToSpace();
         if (newUrl == "failed") {
           setFormSuccessCode(403);
           return;
@@ -192,6 +180,15 @@ export function Home() {
             url: "",
           });
           setFormSuccessCode(200);
+          setFormUploading(false);
+          setFormUpload("" as any);
+          var oldInput = document.getElementById("formUploadFile");
+          var newInput = document.createElement("input");
+          newInput.type = "file";
+          newInput.id = oldInput!.id;
+          newInput.className = oldInput!.className;
+          newInput.onchange = handleFormUpload;
+          oldInput!.parentNode!.replaceChild(newInput, oldInput!);
           await delay(2000);
           setFormSuccessCode(418);
         } else {
