@@ -143,7 +143,7 @@ export function Users() {
           <title>Users - {process.env.NEXT_PUBLIC_SITENAME}</title>
         </Head>
         <Header />
-        <div className="hidden justify-center py-5 md:flex">
+        <div className="hidden justify-center py-5 md:hidden lg:flex">
           <div className="md:flex-1"></div>
           <div className="md:flex-grow">
             <div className="overflow-auto rounded-lg shadow">
@@ -283,10 +283,10 @@ export function Users() {
               </table>
             </div>
           </div>
-          <div className="md:flex-1"></div>
+          <div className="lg:flex-1"></div>
         </div>
         <br />
-        <div className="grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 md:hidden">
+        <div className="grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 lg:hidden">
           {data.map((user: any) => {
             return (
               <div
@@ -387,6 +387,7 @@ export function Users() {
             </div>
           </form>
         </div>
+        <br></br>
       </>
     );
   } else {

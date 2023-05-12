@@ -82,8 +82,7 @@ export function Logs() {
           <title>Logs - {process.env.NEXT_PUBLIC_SITENAME}</title>
         </Head>
         <Header />
-        <br></br>
-        <div className="hidden justify-center py-5 md:flex">
+        <div className="hidden justify-center py-5 md:hidden lg:flex">
           <div className="md:flex-1"></div>
           <div className="md:flex-grow">
             <div className="overflow-auto rounded-lg shadow">
@@ -130,7 +129,7 @@ export function Logs() {
           <div className="md:flex-1"></div>
         </div>
         <br />
-        <div className="grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 md:hidden">
+        <div className="grid grid-cols-1 gap-4 px-5 sm:grid-cols-2 lg:hidden">
           {data.map((log: any) => {
             return (
               <div
@@ -140,7 +139,7 @@ export function Logs() {
                 <div className="flex items-center space-x-2 text-lg text-white">
                   <div>{log.name}</div>
                 </div>
-                <div className="text-md text-gray-200">{log.url}</div>
+                <div className="text-md break-all text-gray-200">{log.url}</div>
                 <div className="text-sm text-blue-400">{log.type}</div>
                 <div className="text-sm text-slate-500">
                   {timeConverter(log.date)}
