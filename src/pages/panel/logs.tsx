@@ -95,7 +95,7 @@ export function Logs() {
                     <th className="w-12 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       Type
                     </th>
-                    <th className="w-12 p-3 text-center text-sm font-semibold tracking-wide text-white">
+                    <th className="w-64 p-3 text-center text-sm font-semibold tracking-wide text-white">
                       URL
                     </th>
                     <th className="w-12 p-3 text-center text-sm font-semibold tracking-wide text-white">
@@ -113,7 +113,7 @@ export function Logs() {
                         <td className="p-3 text-center text-sm text-white">
                           {log.type}
                         </td>
-                        <td className="p-3 text-center text-sm text-white">
+                        <td className="break-all p-3 text-center text-sm text-white">
                           {log.url}
                         </td>
                         <td className="p-3 text-center text-sm text-white">

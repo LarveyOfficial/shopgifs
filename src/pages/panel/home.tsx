@@ -207,8 +207,8 @@ export function Home() {
         </Head>
         <Header />
         <br />
-        <div className="flex flex-col flex-wrap space-y-5 md:flex-row md:flex-nowrap md:space-y-0">
-          <div className="pl-5 pr-5 md:container md:mx-auto md:pl-52">
+        <div className="flex flex-col flex-wrap space-y-5 lg:flex-row lg:flex-nowrap lg:space-y-0">
+          <div className="pl-5 pr-5 lg:container lg:mx-auto lg:pl-52">
             <fieldset className="space-y-1 dark:text-gray-100">
               <form onSubmit={handleSubmit}>
                 <label htmlFor="url" className="block text-sm font-medium">
@@ -253,7 +253,7 @@ export function Home() {
               </form>
             </fieldset>
           </div>
-          <div className="pl-5 pr-5 md:pr-52">
+          <div className="pl-5 pr-5 lg:pr-52">
             <p className="font-bold text-white">Preview</p>
             <div>
               {data["0"].player.type == "image" ? (
