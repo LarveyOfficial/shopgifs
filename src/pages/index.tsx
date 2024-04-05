@@ -14,6 +14,17 @@ export default function Gif() {
   // Check for new image every 1 second
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
+    keepPreviousData: true,
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404.
+      if (error.status === 404) return;
+
+      // Only retry up to 5 times.
+      if (retryCount >= 5) return;
+
+      // Retry every second
+      setTimeout(() => revalidate({ retryCount }), 1000);
+    },
   });
 
   // Take user to panel when keybind detected
