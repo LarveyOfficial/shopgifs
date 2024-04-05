@@ -14,6 +14,7 @@ export default function Gif() {
   // Check for new image every 1 second
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
+    keepPreviousData: true,
   });
 
   // Take user to panel when keybind detected
