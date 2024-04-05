@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useKeyboardShortcut } from "../hooks/useKeyboardShortcut";
+import { useState } from "react";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -11,16 +12,29 @@ const fetcher = (url: RequestInfo | URL) =>
 export default function Gif() {
   const router = useRouter();
 
+  const [isRealError, setIsRealError] = useState(false);
+
   // Check for new image every 1 second
   const { data, error } = useSWR("/api/getConfig", fetcher, {
     refreshInterval: 1000,
     keepPreviousData: true,
+    shouldRetryOnError: true,
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
       // Never retry on 404.
-      if (error.status === 404) return;
+      if (error.status === 404) {
+        setIsRealError(true);
+        return;
+      }
+
+      if (retryCount < 5) {
+        setIsRealError(false);
+      }
 
       // Only retry up to 5 times.
-      if (retryCount >= 5) return;
+      if (retryCount >= 5) {
+        setIsRealError(true);
+        return;
+      }
 
       // Retry every second
       setTimeout(() => revalidate({ retryCount }), 1000);
@@ -35,7 +49,7 @@ export default function Gif() {
   useKeyboardShortcut(["ctrl", "p"], goToPanel);
 
   // If data grab fails, show sad face
-  if (error)
+  if (error && isRealError)
     return (
       <section className="flex h-full items-center dark:bg-gray-800 dark:text-gray-100 sm:p-16">
         <div className="container mx-auto my-8 flex flex-col items-center justify-center space-y-8 px-5 text-center sm:max-w-md">
