@@ -20,24 +20,13 @@ export default function Gif() {
     keepPreviousData: true,
     shouldRetryOnError: true,
     onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
-      // Never retry on 404.
-      if (error.status === 404) {
-        setIsRealError(true);
-        return;
-      }
-
-      if (retryCount < 5) {
+      if (retryCount < 10) {
         setIsRealError(false);
-      }
-
-      // Only retry up to 5 times.
-      if (retryCount >= 5) {
+      } else {
         setIsRealError(true);
-        return;
       }
-
       // Retry every second
-      setTimeout(() => revalidate({ retryCount }), 1000);
+      setTimeout(() => revalidate({ retryCount }), 5000);
     },
   });
 
