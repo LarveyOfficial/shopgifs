@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useKeyboardShortcut } from "../hooks/useKeyboardShortcut";
+import { useKeyboardShortcut } from "@/hooks/useKeyboardShortcut";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
