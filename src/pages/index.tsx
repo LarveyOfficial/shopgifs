@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useKeyboardShortcut } from "../hooks/useKeyboardShortcut";
+import { useKeyboardShortcut } from "@/hooks/useKeyboardShortcut";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -11,9 +11,9 @@ const fetcher = (url: RequestInfo | URL) =>
 export default function Gif() {
   const router = useRouter();
 
-  // Check for new image every 1 second
+  // Check for new image every 5 seconds
   const { data } = useSWR("/api/getConfig", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
     keepPreviousData: true,
   });
 

@@ -6,7 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { useKeyboardShortcut } from "../../hooks/useKeyboardShortcut";
+import { useKeyboardShortcut } from "@/hooks/useKeyboardShortcut";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -70,7 +70,7 @@ export function Header() {
     );
 
   if (!data.includes(session!.user!.email)) {
-    signOut({ callbackUrl: `${window.location.origin}/panel` });
+    signOut({ callbackUrl: `${globalThis.location.origin}/panel` });
   }
 
   if (session) {
@@ -81,16 +81,16 @@ export function Header() {
           aria-label="Global"
         >
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <button className="-m-1.5 p-1.5">
               <span className="sr-only">Shop Gifs</span>
               <Image
                 width={500}
                 height={500}
                 className="h-9 w-auto"
-                src={!showPhopp ? "/gold.webp" : "/phopp.png"}
+                src={showPhopp ? "/phopp.png" : "/gold.webp"}
                 alt=""
               />
-            </a>
+            </button>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -135,15 +135,14 @@ export function Header() {
             </Link>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a
-              href="#"
+            <button
               className="text-sm font-semibold leading-6 text-white hover:text-yellow-500"
               onClick={() =>
-                signOut({ callbackUrl: `${window.location.origin}/panel` })
+                signOut({ callbackUrl: `${globalThis.location.origin}/panel` })
               }
             >
               <span aria-hidden="true">&larr;</span> Sign out
-            </a>
+            </button>
           </div>
         </nav>
         <Dialog
@@ -155,16 +154,16 @@ export function Header() {
           <div className="fixed inset-0 z-10" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-700 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-yellow-500/50">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
+              <button className="-m-1.5 p-1.5">
                 <span className="sr-only">Shop Gifs</span>
                 <Image
                   width={500}
                   height={500}
                   className="h-9 w-auto"
-                  src={!showPhopp ? "/gold.webp" : "/phopp.png"}
+                  src={showPhopp ? "/phopp.png" : "/gold.webp"}
                   alt=""
                 />
-              </a>
+              </button>
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-white"
@@ -197,17 +196,16 @@ export function Header() {
                   </Link>
                 </div>
                 <div className="py-6">
-                  <a
-                    href="#"
+                  <button
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-600 hover:text-yellow-500"
                     onClick={() =>
                       signOut({
-                        callbackUrl: `${window.location.origin}/panel`,
+                        callbackUrl: `${globalThis.location.origin}/panel`,
                       })
                     }
                   >
                     Sign out
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

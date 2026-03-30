@@ -10,9 +10,9 @@ const fetcher = (url: RequestInfo | URL) =>
 
 export function Home() {
   const { data: session } = useSession();
-  // Update preview gif/image every second
+  // Update preview gif/image every 5 seconds
   const { data, error } = useSWR("/api/getConfig", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
   // Default form values
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ export function Home() {
   });
   const [formUpload, setFormUpload] = useState();
   const [formUploading, setFormUploading] = useState(false);
-  // Variable that displays if an error has occured or not
+  // Variable that displays if an error has occurred or not
   const [formSuccessCode, setFormSuccessCode] = useState(Number);
 
   if (error) {
@@ -96,7 +96,7 @@ export function Home() {
       const auth = "" + process.env.NEXT_PUBLIC_TIXTEAPI;
 
       if (formUpload) {
-        formData.append("file", formUpload!);
+        formData.append("file", formUpload);
         const res = await fetch("https://api.tixte.com/v1/upload?random=true", {
           method: "POST",
           headers: {
@@ -106,7 +106,7 @@ export function Home() {
         });
 
         const data = await res.json();
-        if (data.success == false) {
+        if (!data.success) {
           return "failed";
         }
         return data.data.direct_url;
@@ -138,7 +138,7 @@ export function Home() {
         };
       }
 
-      const JSONdata = JSON.stringify(data);
+      const jsonData = JSON.stringify(data);
 
       const endpoint = "/api/updateSource";
 
@@ -147,7 +147,7 @@ export function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSONdata,
+        body: jsonData,
       };
 
       const response = await fetch(endpoint, options);
@@ -182,8 +182,8 @@ export function Home() {
           setFormSuccessCode(200);
           setFormUploading(false);
           setFormUpload("" as any);
-          var oldInput = document.getElementById("formUploadFile");
-          var newInput = document.createElement("input");
+          let oldInput = document.getElementById("formUploadFile");
+          let newInput = document.createElement("input");
           newInput.type = "file";
           newInput.id = oldInput!.id;
           newInput.className = oldInput!.className;

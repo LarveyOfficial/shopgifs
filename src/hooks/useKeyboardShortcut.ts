@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 
-type Key = "ctrl" | "shift" | "alt" | string;
-
-export const useKeyboardShortcut = (keys: Key[], callback: () => void) => {
+export const useKeyboardShortcut = (keys: string[], callback: () => void) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
@@ -11,7 +9,7 @@ export const useKeyboardShortcut = (keys: Key[], callback: () => void) => {
             (key === "ctrl" && event.ctrlKey) ||
             (key === "shift" && event.shiftKey) ||
             (key === "alt" && event.altKey) ||
-            (typeof key === "string" && event.key.toLowerCase() === key)
+            (event.key.toLowerCase() === key)
         )
       ) {
         event.preventDefault();
@@ -20,10 +18,10 @@ export const useKeyboardShortcut = (keys: Key[], callback: () => void) => {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      globalThis.removeEventListener("keydown", handleKeyDown);
     };
   }, [keys, callback]);
 };

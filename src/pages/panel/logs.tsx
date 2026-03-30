@@ -1,5 +1,5 @@
-import { useSession } from "next-auth/react";
-import { Header } from "./Header";
+import {useSession} from "next-auth/react";
+import {Header} from "./Header";
 import useSWR from "swr";
 import Head from "next/head";
 
@@ -8,16 +8,8 @@ const fetcher = (url: RequestInfo | URL) =>
 
 function timeConverter(UNIX_timestamp_str: string) {
   const UNIX_timestamp = +UNIX_timestamp_str;
-  var a = new Date(UNIX_timestamp);
-  var year = a.getFullYear();
-  var month = ("0" + (a.getMonth() + 1)).slice(-2);
-  var date = ("0" + a.getDate()).slice(-2);
-  var hour = ("0" + a.getHours()).slice(-2);
-  var min = ("0" + a.getMinutes()).slice(-2);
-  var sec = ("0" + a.getSeconds()).slice(-2);
-  var time =
-    year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
-  return time;
+  let a = new Date(UNIX_timestamp);
+  return a.toLocaleString();
 }
 
 export function Logs() {

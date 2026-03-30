@@ -10,7 +10,7 @@ const fetcher = (url: RequestInfo | URL) =>
 export function Users() {
   const { data: session } = useSession();
   const { data, error } = useSWR("/api/manageUserObjects", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
   let isUserAdmin = false;
   const [formData, setFormData] = useState({
@@ -184,19 +184,19 @@ export function Users() {
                               id="name"
                               name="name"
                               value={user.name}
-                            ></input>
+                            />
                             <input
                               type="hidden"
                               id="email"
                               name="email"
                               value={user.email}
-                            ></input>
+                            />
                             <input
                               type="hidden"
                               id="admin"
                               name="admin"
                               value={user.admin.toString()}
-                            ></input>
+                            />
                             <button
                               type="submit"
                               name="action"
@@ -221,7 +221,7 @@ export function Users() {
                         onChange={handleInput}
                         value={formData.name}
                         className="rounded-lg border text-center focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
-                      ></input>
+                      />
                     </td>
                     <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <input
@@ -232,7 +232,7 @@ export function Users() {
                         onChange={handleInput}
                         value={formData.email}
                         className="rounded-lg border text-center focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
-                      ></input>
+                      />
                     </td>
                     <td className="whitespace-nowrap p-3 text-center text-sm text-white">
                       <label className="relative inline-flex cursor-pointer items-center">
@@ -244,8 +244,8 @@ export function Users() {
                           value={formData.admin}
                           className="peer sr-only"
                           checked={formData.admin == "true"}
-                        ></input>
-                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800"></div>
+                        />
+                        <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:peer-focus:ring-blue-800" />
                       </label>
                     </td>
                     <td className="whitespace-nowrap p-3 text-center text-sm text-white">
@@ -255,19 +255,19 @@ export function Users() {
                           id="name"
                           name="name"
                           value={formData.name}
-                        ></input>
+                        />
                         <input
                           type="hidden"
                           id="email"
                           name="email"
                           value={formData.email}
-                        ></input>
+                        />
                         <input
                           type="hidden"
                           id="admin"
                           name="admin"
                           value={formData.admin.toString()}
-                        ></input>
+                        />
                         <button
                           type="submit"
                           name="action"
@@ -306,19 +306,19 @@ export function Users() {
                     id="name"
                     name="name"
                     value={user.name}
-                  ></input>
+                  />
                   <input
                     type="hidden"
                     id="email"
                     name="email"
                     value={user.email}
-                  ></input>
+                  />
                   <input
                     type="hidden"
                     id="admin"
                     name="admin"
                     value={user.admin ? "true" : "false"}
-                  ></input>
+                  />
                   <button
                     type="submit"
                     name="action"
@@ -344,7 +344,7 @@ export function Users() {
                     onChange={handleInput}
                     value={formData.name}
                     className="rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
-                  ></input>
+                  />
                 </div>
               </div>
               <div className="text-md text-gray-200">
@@ -356,7 +356,7 @@ export function Users() {
                   onChange={handleInput}
                   value={formData.email}
                   className="rounded-lg border focus:ring-inset focus:ring-yellow-400 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm"
-                ></input>
+                />
               </div>
               <div className="text-sm text-blue-400">
                 <label className="relative inline-flex cursor-pointer items-center">
@@ -368,7 +368,7 @@ export function Users() {
                     value={formData.admin}
                     className="peer sr-only"
                     checked={formData.admin == "true"}
-                  ></input>
+                  />
                   <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
                   <span className="ml-3 text-sm font-medium text-blue-400 dark:text-blue-400">
                     Admin
