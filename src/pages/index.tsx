@@ -11,9 +11,9 @@ const fetcher = (url: RequestInfo | URL) =>
 export default function Gif() {
   const router = useRouter();
 
-  // Check for new image every 1 second
+  // Check for new image every 5 seconds
   const { data } = useSWR("/api/getConfig", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
     keepPreviousData: true,
   });
 

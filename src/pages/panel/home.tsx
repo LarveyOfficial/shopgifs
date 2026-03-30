@@ -10,9 +10,9 @@ const fetcher = (url: RequestInfo | URL) =>
 
 export function Home() {
   const { data: session } = useSession();
-  // Update preview gif/image every second
+  // Update preview gif/image every 5 seconds
   const { data, error } = useSWR("/api/getConfig", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
   // Default form values
   const [formData, setFormData] = useState({
